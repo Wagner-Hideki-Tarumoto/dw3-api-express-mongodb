@@ -1,38 +1,21 @@
 // importar o Express
 import express from "express";
+//importar o Mongoose
+import mongoose from "mongoose";
+//importar o Moel
+import Game from "./models/Games.js";
+//importar as rotas (endpoints)
+import gameRoutes from "./routes/gameRoutes.js";
+
 //carregando Express
 const app = express();
-
 //configuracoes do Express
 app.use(express.json());
+// Carregando as rotas
+app.use('/', gameRoutes)
 
-//ROTA PRINCIPAL DA API
-app.get("/", (req, res) =>{
-// JSON que será retornado pela API
-const games = [
-	{
-		title: "Fifa 2019",		
-		year: 2019,
-		plataform: "X-box 360",
-		price: 198
-	},
-	{
-		title: "The Sins",		
-		year: 2016,
-		plataform: "PC (windows)",
-		price: 149
-	},
-	{
-		title: "CS GO",		
-		year: 2012,
-		plataform: "PC (windows)",
-		price: 89
-	}
-]	
-
-//Configurando o retorno da API
-res.status(200).json(games)
-});	
+//iniciando a conexão com o MongoDB
+mongoose.connect("mongodb://127.0.0.1:27017/apithegames")
 
 //Iniciando o servidor da API
 const port = 4000;
