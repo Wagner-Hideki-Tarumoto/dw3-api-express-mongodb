@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 const gameSchema = new mongoose.Schema({
     title: String,
     year: Number,
-    plataform: String,
+    platform: String,
     price: Number
 })
 
