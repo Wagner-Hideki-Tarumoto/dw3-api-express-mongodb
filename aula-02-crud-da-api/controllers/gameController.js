@@ -21,9 +21,9 @@ const createGame = async (req, res) =>{
     try{
         //const tittle = req.body.title
         //Coletando dados enviados dos formulários, da requisição da insomnia, etc, gravando nas vairáveis
-        const {title, year, platform, price} = req.body;
+        const {title, year, price, descriptions} = req.body;
         //Enviando dados para o Service cadastrar 
-        await gameService.Create(title, year, platform, price);
+        await gameService.Create(title, year, price, descriptions);
         res.status(201).json({ message: "Jogo cadastrado com sucesso!"})
         //cod. 201 (CREATED)-> Recurso criado com sucesso no servidor
     }catch (error){
@@ -50,7 +50,32 @@ const deleteGame = async (req, res) =>{
         console.log(error);
         res.status(500).json({error: 'Erro interno do servidor'})
     }
-}//funççao que trata a requisição para ALTERAR um jogo
+}
+
+//Função que tratA a requisção para LISTAR UM JOGO ÚNICO
+const getOneGame = async(req, res) =>{
+    try{
+        const id = req.params.id
+        if (ObjectId.isValid(id)){
+            const game =await gameService.getOne(id)
+            //Verificando se houve retorno na busca
+            if(!game){
+                res.status(404).json({error: 'Jogo não encontrado'})
+                //cod. 404 - Not found
+            }else{
+                res.status(200).json({ game });
+            }
+            //Seo ID não for válido
+        }else{
+           res.status(404).json({error: 'O ID informado é inválido.'})
+        }
+    }catch(error){
+        console.log(error);
+        res.status(500).json({error: "erro interno do servidor"})
+    }
+}
+
+//funççao que trata a requisição para ALTERAR um jogo
 const updateGame = async (req, res) =>{
     try{
         //coletando ID da rota
@@ -58,7 +83,7 @@ const updateGame = async (req, res) =>{
         //Validando o ObjectID
         if (ObjectId.isValid(id)){
             //coletando os dados que serão alterados
-            const {title, year, platform, price} =req.body
+            const {title, year, price, descriptions} =req.body
             //Enviando dados para o service
             await gameService.Update(id, title, year, platform, price);
             res.status(200).json({message: 'jogo atualizado com sucesso.'})
@@ -70,4 +95,4 @@ const updateGame = async (req, res) =>{
 
 }
 //Exportando as funções
-export default {getAllGames, createGame, deleteGame, updateGame}
+export default {getAllGames, createGame, deleteGame, updateGame, getOneGame}
