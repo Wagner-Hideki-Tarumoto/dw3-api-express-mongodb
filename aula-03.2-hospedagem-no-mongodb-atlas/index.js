@@ -1,8 +1,10 @@
 // importar o Express
 import express from "express";
+//iniciando a conexão com o MongoDB Atlas
+import mongoose from "./config/db-connection.js";
 //importar o Mongoose
-import mongoose from "mongoose";
-//importar o Moel
+//import mongoose from "mongoose";
+//importar o Model
 import Game from "./models/Games.js";
 //importar as rotas (endpoints)
 import gameRoutes from "./routes/gameRoutes.js";
@@ -10,22 +12,22 @@ import gameRoutes from "./routes/gameRoutes.js";
 //carregando Express
 const app = express();
 //configuracoes do Express
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false}));
 app.use(express.json());
 
 // Carregando as rotas
-app.use('/', gameRoutes)
+app.use('/', gameRoutes);
 
 //iniciando a conexão com o MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/apithegames_aninhado")
+//mongoose.connect("mongodb://127.0.0.1:27017/apithegames_aninhado")
 
 //Iniciando o servidor da API
 const port = 4000;
-app.listen(port,(error) =>{
+app.listen(port, (error) => {
     if (error){
-        console.log("Ocorreu um erro ao iniciar a API!" + erro)
+        console.log("Ocorreu um erro ao iniciar a API!" + erro);
 
-    }else{
+    }else {
         console.log("API iniciando com sucesso na porta" + port);
     }
 });
